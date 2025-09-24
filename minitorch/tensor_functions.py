@@ -117,8 +117,8 @@ class Sigmoid(Function):
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tensor:
-        (sig, ): Tensor = ctx.saved_tensors
-        return grad_output * sig * (1 + (-sig))  # .f.mul_zip(grad_output, sig.f.mul_zip(sig, 1 - sig))
+        (sig, ) = ctx.saved_tensors
+        return grad_output.f.mul_zip(grad_output, sig.f.mul_zip(sig, 1 + sig.f.neg_map(sig)))
 
 
 class ReLU(Function):
@@ -154,8 +154,8 @@ class Exp(Function):
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tensor:
-        (e, ): Tensor = ctx.saved_tensors
-        return e * grad_output
+        (e, ) = ctx.saved_tensors
+        return grad_output.f.mul_zip(e, grad_output)
 
 
 class Sum(Function):
@@ -209,7 +209,7 @@ class Permute(Function):
     @staticmethod
     def forward(ctx: Context, a: Tensor, order: Tensor) -> Tensor:
         ctx.save_for_backward(order)
-        permute_order = [int(order[i].item()) for i in range(order.size)]
+        permute_order = [int(order[i]) for i in range(order.size)]
         return a._new(a._tensor.permute(*permute_order))
 
     @staticmethod
