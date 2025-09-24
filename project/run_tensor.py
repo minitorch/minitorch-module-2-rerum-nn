@@ -3,6 +3,7 @@ Be sure you have minitorch installed in you Virtual Env.
 >>> pip install -Ue .
 """
 
+import tqdm
 import minitorch
 
 
@@ -21,9 +22,13 @@ class Network(minitorch.Module):
         self.layer3 = Linear(hidden_layers, 1)
 
     def forward(self, x):
-        # TODO: Implement for Task 2.5.
-        raise NotImplementedError("Need to implement for Task 2.5")
-
+        x = self.layer1(x)
+        x = x.relu()
+        x = self.layer2(x)
+        x = x.relu()
+        x = self.layer3(x)
+        x = x.sigmoid()
+        return x
 
 class Linear(minitorch.Module):
     def __init__(self, in_size, out_size):
@@ -33,8 +38,7 @@ class Linear(minitorch.Module):
         self.out_size = out_size
 
     def forward(self, x):
-        # TODO: Implement for Task 2.5.
-        raise NotImplementedError("Need to implement for Task 2.5")
+        return (x.view(x.shape[0], 1, x.shape[1]) * self.weights.value.permute(1, 0)).sum(2).view(x.shape[0], self.out_size) + self.bias.value
 
 
 def default_log_fn(epoch, total_loss, correct, losses):
@@ -53,7 +57,6 @@ class TensorTrain:
         return self.model.forward(minitorch.tensor(X))
 
     def train(self, data, learning_rate, max_epochs=500, log_fn=default_log_fn):
-
         self.learning_rate = learning_rate
         self.max_epochs = max_epochs
         self.model = Network(self.hidden_layers)
@@ -63,7 +66,7 @@ class TensorTrain:
         y = minitorch.tensor(data.y)
 
         losses = []
-        for epoch in range(1, self.max_epochs + 1):
+        for epoch in tqdm.tqdm(range(1, self.max_epochs + 1)):
             total_loss = 0.0
             correct = 0
             optim.zero_grad()
@@ -91,5 +94,5 @@ if __name__ == "__main__":
     PTS = 50
     HIDDEN = 2
     RATE = 0.5
-    data = minitorch.datasets["Simple"](PTS)
+    data = minitorch.datasets["Spiral"](PTS)
     TensorTrain(HIDDEN).train(data, RATE)

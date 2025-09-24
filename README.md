@@ -17,3 +17,16 @@ python sync_previous_module.py previous-module-dir current-module-dir
 The files that will be synced are:
 
         minitorch/operators.py minitorch/module.py minitorch/autodiff.py minitorch/scalar.py minitorch/module.py project/run_manual.py project/run_scalar.py
+
+--- 
+
+## Task 2.5
+
+500 epochs:
+- Simple: loss=0.318, correct=50, 11,5 epochs/s avg. 50 correct after 60 epochs
+- Diag: loss=0.614, correct=50, 11,6 epochs/s avg. 50 correct after 230 epochs
+- Split: loss=32.871, correct=31, 11,5 epochs/s avg. 
+- Xor: loss=33.203, correct=31, 11,4 epochs/s avg.
+- Circle: loss=27.288, correct=33, 11,7 epochs/s avg.
+- Spiral: loss=34.657, correct=25, 11.6 epochs/s avg.
+

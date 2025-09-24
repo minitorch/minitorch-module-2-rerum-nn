@@ -22,7 +22,15 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
     Returns:
         An approximation of $f'_i(x_0, \ldots, x_{n-1})$
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    values: List[float] = list(vals)
+
+    left: List[float] = list(values)
+    left[arg] -= epsilon / 2
+
+    right: List[float] = list(values)
+    right[arg] += epsilon / 2
+
+    return (f(*right) - f(*left)) / epsilon
 
 
 variable_count = 1
@@ -60,7 +68,22 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     Returns:
         Non-constant Variables in topological order starting from the right.
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+
+    visited: set[int] = set()
+    result: List[Variable] = []
+
+    def dfs(variable: Variable) -> None:
+        visited.add(variable.unique_id)
+
+        if not variable.is_constant():
+            for parent in variable.parents:
+                if parent.unique_id not in visited:
+                    dfs(parent)
+
+        result.append(variable)
+
+    dfs(variable)
+    return result[::-1]
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
@@ -74,7 +97,22 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
 
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    order: Iterable[Variable] = topological_sort(variable)
+    derivs: dict[int, Any] = {}
+    derivs[variable.unique_id] = deriv
+
+    for var in order:
+        if var.is_leaf() or var.is_constant():
+            continue
+
+        partial_derivs: Iterable[Tuple[Variable, Any]] = var.chain_rule(derivs[var.unique_id])
+        for partial_deriv, value in partial_derivs:
+            if partial_deriv.is_leaf():
+                partial_deriv.accumulate_derivative(value)
+            else:
+                if partial_deriv.unique_id not in derivs:
+                    derivs[partial_deriv.unique_id] = 0.0
+                derivs[partial_deriv.unique_id] += value
 
 
 @dataclass
