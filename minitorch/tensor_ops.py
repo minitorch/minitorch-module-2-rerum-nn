@@ -24,7 +24,7 @@ class MapProto(Protocol):
         ...
 
 
-class TensorOps:
+class TensorOps(Protocol):
     @staticmethod
     def map(fn: Callable[[float], float]) -> MapProto:
         ...
