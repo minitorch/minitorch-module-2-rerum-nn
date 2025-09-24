@@ -24,24 +24,24 @@ class MapProto(Protocol):
         ...
 
 
-class TensorOps(Protocol):
+class TensorOps:
     @staticmethod
     def map(fn: Callable[[float], float]) -> MapProto:
-        ...
+        return None # type: ignore
 
     @staticmethod
     def cmap(fn: Callable[[float], float]) -> Callable[[Tensor, Tensor], Tensor]:
-        ...
+        return None # type: ignore
 
     @staticmethod
     def zip(fn: Callable[[float, float], float]) -> Callable[[Tensor, Tensor], Tensor]:
-        ...
+        return None # type: ignore
 
     @staticmethod
     def reduce(
         fn: Callable[[float, float], float], start: float = 0.0
     ) -> Callable[[Tensor, int], Tensor]:
-        ...
+        return None # type: ignore
 
     @staticmethod
     def matrix_multiply(a: Tensor, b: Tensor) -> Tensor:
