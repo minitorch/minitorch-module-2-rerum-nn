@@ -30,6 +30,7 @@ class Network(minitorch.Module):
         x = x.sigmoid()
         return x
 
+
 class Linear(minitorch.Module):
     def __init__(self, in_size, out_size):
         super().__init__()

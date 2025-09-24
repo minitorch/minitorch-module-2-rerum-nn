@@ -104,8 +104,8 @@ class Mul(Function):
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tuple[Tensor, Tensor]:
-        a, b = ctx.saved_values 
-        return grad_output * b, grad_output * a # grad_output.f.mul_zip(grad_output, b), grad_output.f.mul_zip(grad_output, a)
+        a, b = ctx.saved_values
+        return grad_output * b, grad_output * a  # grad_output.f.mul_zip(grad_output, b), grad_output.f.mul_zip(grad_output, a)
 
 
 class Sigmoid(Function):
@@ -118,7 +118,7 @@ class Sigmoid(Function):
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tensor:
         (sig, ) = ctx.saved_values
-        return grad_output * sig * (1 + (-sig)) # .f.mul_zip(grad_output, sig.f.mul_zip(sig, 1 - sig))
+        return grad_output * sig * (1 + (-sig))  # .f.mul_zip(grad_output, sig.f.mul_zip(sig, 1 - sig))
 
 
 class ReLU(Function):
