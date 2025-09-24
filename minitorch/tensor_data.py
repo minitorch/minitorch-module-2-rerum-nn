@@ -110,9 +110,11 @@ def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
     out_shape = [1] * max(len(shape1), len(shape2))
 
     if len(shape1) < len(shape2):
-        shape1 = (1,) * (len(shape2) - len(shape1)) + shape1
+        new_shape = [1 for _ in range(len(shape2) - len(shape1))] + [i for i in shape1]
+        shape1 = tuple(new_shape)
     if len(shape2) < len(shape1):
-        shape2 = (1,) * (len(shape1) - len(shape2)) + shape2
+        new_shape = [1 for _ in range(len(shape1) - len(shape2))] + [i for i in shape2]
+        shape2 = tuple(new_shape)
 
     for i in range(len(out_shape)):
         if shape1[i] == 1:

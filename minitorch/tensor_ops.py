@@ -272,8 +272,8 @@ def tensor_map(fn: Callable[[float], float]) -> Any:
         for i in out_shape:
             size *= i
 
-        out_index = np.zeros(len(out_shape))
-        in_index = np.zeros(len(in_shape))
+        out_index = np.zeros(len(out_shape), dtype=np.int32)
+        in_index = np.zeros(len(in_shape), dtype=np.int32)
 
         for i in range(size):
             to_index(i, out_shape, out_index)
@@ -335,9 +335,9 @@ def tensor_zip(fn: Callable[[float, float], float]) -> Any:
         for i in out_shape:
             size *= i
 
-        out_index = np.zeros(len(out_shape))
-        a_index = np.zeros(len(a_shape))
-        b_index = np.zeros(len(b_shape))
+        out_index = np.zeros(len(out_shape), dtype=np.int32)
+        a_index = np.zeros(len(a_shape), dtype=np.int32)
+        b_index = np.zeros(len(b_shape), dtype=np.int32)
 
         for i in range(size):
             to_index(i, out_shape, out_index)
@@ -387,8 +387,8 @@ def tensor_reduce(fn: Callable[[float, float], float]) -> Any:
         for i in a_shape:
             size *= i
 
-        out_index = np.zeros(len(out_shape))
-        a_index = np.zeros(len(a_shape))
+        out_index = np.zeros(len(out_shape), dtype=np.int32)
+        a_index = np.zeros(len(a_shape), dtype=np.int32)
 
         processed_poses = set()
 
