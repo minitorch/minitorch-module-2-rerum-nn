@@ -117,7 +117,7 @@ class Sigmoid(Function):
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tensor:
-        (sig, ) = ctx.saved_values
+        (sig, ): Tensor = ctx.saved_tensors
         return grad_output * sig * (1 + (-sig))  # .f.mul_zip(grad_output, sig.f.mul_zip(sig, 1 - sig))
 
 
@@ -154,7 +154,7 @@ class Exp(Function):
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tensor:
-        (e, ) = ctx.saved_values
+        (e, ): Tensor = ctx.saved_tensors
         return e * grad_output
 
 
